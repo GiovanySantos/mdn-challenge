@@ -1,7 +1,7 @@
 'use client';
 import RegisterForm from '@/components/RegisterForm';
 import { useAppDispatch } from '@/hooks/hooks';
-import { initialState, setCompanyData } from '@/slices/companySlice';
+import { setCompanyData } from '@/slices/companySlice';
 import { RootState } from '@/store';
 import { CompanyType } from '@/types/types';
 import { encryptCompanyData } from '@/utils';
@@ -50,12 +50,6 @@ const Authentication: React.FC = () => {
   const clearErrors = (field: string) => {
     const newErrorList = companyFormErrors.filter(item => item !== field);
     setCompanyFormErrors(newErrorList);
-  };
-
-  const resetForm = () => {
-    setCompanyFormData(initialState);
-    setCompanyFormErrors([]);
-    handleClearFiles();
   };
 
   const onChangeFormData = (event: ChangeEvent<HTMLInputElement>) => {
@@ -121,7 +115,6 @@ const Authentication: React.FC = () => {
       } finally {
         setShowToaster(true);
         setIsLoading(false);
-        resetForm();
       }
     }
   };
