@@ -34,13 +34,6 @@ const RegisterForm: React.FC<IProps> = props => {
     handleClearFiles,
   } = props;
 
-  const getDatePickerValue = () => {
-    if (companyFormData.corporationDate !== '') {
-      return dayjs(companyFormData.corporationDate);
-    }
-    return dayjs();
-  };
-
   const getIsValid = (fieldName: string) => {
     return !errorsList.some(item => item === fieldName);
   };
@@ -62,7 +55,7 @@ const RegisterForm: React.FC<IProps> = props => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             format="LL"
-            value={getDatePickerValue()}
+            value={dayjs(companyFormData.corporationDate)}
             onChange={newValue => onChangeDate(newValue)}
           />
         </LocalizationProvider>

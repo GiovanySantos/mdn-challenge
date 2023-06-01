@@ -4,7 +4,7 @@ import { useAppDispatch } from '@/hooks/hooks';
 import { setCompanyData } from '@/slices/companySlice';
 import { RootState } from '@/store';
 import { CompanyType } from '@/types/types';
-import { decryptCompanyData, encryptCompanyData } from '@/utils';
+import { encryptCompanyData } from '@/utils';
 import { Backdrop, Stack, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
@@ -41,8 +41,8 @@ const Authentication: React.FC = () => {
       newErrorList.push('documents');
       isValid = false;
     }
-
     setCompanyFormErrors(newErrorList);
+
     return isValid;
   };
 
@@ -94,33 +94,26 @@ const Authentication: React.FC = () => {
 
   const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (validateFields()) {
       setIsLoading(true);
       dispatch(setCompanyData(companyFormData));
-
-      const encryptedCompanyData = await encryptCompanyData(companyFormData);
-
-      console.log(encryptCompanyData);
-
-      const decryptedCompanyData = await decryptCompanyData(
-        encryptedCompanyData,
-      );
-
-      console.log(decryptedCompanyData);
-
-      await axios
-        .post('https://example.com/api', encryptedCompanyData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => setIsLoading(false));
+      try {
+        const encryptedCompanyData = await encryptCompanyData(companyFormData);
+        await axios
+          .post('/', encryptedCompanyData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then(response => {
+            console.log(response.data);
+          });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -130,7 +123,6 @@ const Authentication: React.FC = () => {
         <Backdrop
           sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
           open={isLoading}
-          onClick={() => setIsLoading(false)}
         >
           <CircularProgress color="inherit" />
         </Backdrop>
