@@ -1,12 +1,6 @@
-type document = {
-  name: string;
-  size: string;
-  content: string;
-};
-
 export type CompanyType = {
   companyName: string;
-  crporationDate: string;
+  corporationDate: string;
   address: string;
-  documents: document[];
+  documents: string[];
 };

@@ -1,9 +1,9 @@
 import { CompanyType } from '@/types/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-const initialState: CompanyType = {
+export const initialState: CompanyType = {
   companyName: '',
-  crporationDate: '',
+  corporationDate: '',
   address: '',
   documents: [],
 };
@@ -13,7 +13,13 @@ export const companySlice = createSlice({
   initialState,
   reducers: {
     setCompanyData: (state, action: PayloadAction<CompanyType>) => {
-      return { ...state, company: action.payload };
+      return {
+        ...state,
+        companyName: action.payload.companyName,
+        corporationDate: action.payload.corporationDate,
+        address: action.payload.address,
+        documents: action.payload.documents,
+      };
     },
   },
 });
