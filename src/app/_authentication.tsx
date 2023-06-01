@@ -5,7 +5,7 @@ import { setCompanyData } from '@/slices/companySlice';
 import { RootState } from '@/store';
 import { CompanyType } from '@/types/types';
 import { encryptCompanyData } from '@/utils';
-import { Backdrop, Stack, Typography } from '@mui/material';
+import { Alert, Backdrop, Snackbar, Stack, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -20,6 +20,7 @@ const Authentication: React.FC = () => {
   const [companyFormErrors, setCompanyFormErrors] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showToaster, setShowToaster] = useState<boolean>(false);
 
   const validateFields = () => {
     let isValid = true;
@@ -112,6 +113,7 @@ const Authentication: React.FC = () => {
       } catch (error) {
         console.log(error);
       } finally {
+        setShowToaster(true);
         setIsLoading(false);
       }
     }
@@ -127,6 +129,15 @@ const Authentication: React.FC = () => {
           <CircularProgress color="inherit" />
         </Backdrop>
       )}
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        open={showToaster}
+        onClose={() => setShowToaster(false)}
+        key={'top' + 'left'}
+        autoHideDuration={6000}
+      >
+        <Alert severity="success">Great! You are registered</Alert>
+      </Snackbar>
       <Typography variant="h6">Enter your company data</Typography>
       <RegisterForm
         handleUploadFile={handleUploadFile}
