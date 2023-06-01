@@ -121,14 +121,12 @@ const Authentication: React.FC = () => {
 
   return (
     <Stack justifyContent="space-between" alignItems="center" spacing={2}>
-      {isLoading && (
-        <Backdrop
-          sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
-          open={isLoading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      )}
+      <Backdrop
+        sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         open={showToaster}
