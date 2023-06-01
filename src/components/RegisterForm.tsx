@@ -55,6 +55,7 @@ const RegisterForm: React.FC<IProps> = props => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             format="LL"
+            label="Corporation Date"
             value={dayjs(companyFormData.corporationDate)}
             onChange={newValue => onChangeDate(newValue)}
           />
@@ -70,6 +71,7 @@ const RegisterForm: React.FC<IProps> = props => {
           variant="outlined"
           fullWidth
         />
+
         <Box sx={{ flexGrow: 1 }}>
           <Grid container justifyContent="center" alignItems="center">
             <Grid>
@@ -98,6 +100,7 @@ const RegisterForm: React.FC<IProps> = props => {
             </Grid>
           </Grid>
         </Box>
+
         {companyFormData.documents.length > 0 && (
           <Button
             color="error"
@@ -108,6 +111,7 @@ const RegisterForm: React.FC<IProps> = props => {
             Clear files
           </Button>
         )}
+
         <Button color="success" variant="outlined" type="submit" fullWidth>
           Submit
         </Button>

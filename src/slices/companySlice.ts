@@ -1,9 +1,10 @@
 import { CompanyType } from '@/types/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
 
 export const initialState: CompanyType = {
   companyName: '',
-  corporationDate: '',
+  corporationDate: dayjs().format(),
   address: '',
   documents: [],
 };
