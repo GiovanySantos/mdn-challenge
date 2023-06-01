@@ -132,7 +132,7 @@ const Authentication: React.FC = () => {
         open={showToaster}
         onClose={() => setShowToaster(false)}
         key={'top' + 'left'}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
       >
         <Alert severity="success">Great! You are registered</Alert>
       </Snackbar>
