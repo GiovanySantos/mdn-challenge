@@ -1,33 +1,36 @@
 'use client';
 import { store } from '@/store';
+import { Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import React from 'react';
 import { Provider } from 'react-redux';
 import Authentication from './_authentication';
-import { Typography } from '@mui/material';
+import '../styles/globals.css';
 
 const Home: React.FC = () => {
   return (
     <Provider store={store}>
-      <div className="flex h-screen flex-col justify-between bg-zinc-100">
-        <nav className="flex flex-none items-center justify-center bg-teal-900 px-10 py-5 text-zinc-100">
+      <Stack
+        sx={{ height: '100vh' }}
+        justifyContent="space-between"
+        alignItems="center"
+        spacing={2}
+      >
+        <div className="nav">
           <Typography variant="h5">MDN Company Registration</Typography>
-        </nav>
-        <main className="flex items-center justify-center overflow-y-auto">
+        </div>
+        <main>
           <Authentication />
         </main>
-        <footer className="flex flex-none items-center justify-center gap-4 bg-teal-900 px-10 py-5 font-light text-zinc-100">
+        <footer className="footer">
           <Typography variant="subtitle1">
-            Made by Giovany Santos, to see more click here {'->'}
+            Made by Giovany Santos, to see more access
           </Typography>
-          <a
-            target="_blank"
-            href="https://giovany.com.br"
-            className="hover:text-green-400"
-          >
-            giovany.com.br
+          <a target="_blank" href="https://giovany.com.br" className="url">
+            <Typography variant="subtitle1">giovany.com.br</Typography>
           </a>
         </footer>
-      </div>
+      </Stack>
     </Provider>
   );
 };

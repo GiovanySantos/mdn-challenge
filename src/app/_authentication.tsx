@@ -4,7 +4,10 @@ import { useAppDispatch } from '@/hooks/hooks';
 import { setCompanyData } from '@/slices/companySlice';
 import { RootState } from '@/store';
 import { CompanyType } from '@/types/types';
-import { Typography } from '@mui/material';
+import { decryptCompanyData, encryptCompanyData } from '@/utils';
+import { Backdrop, Stack, Typography } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -16,6 +19,7 @@ const Authentication: React.FC = () => {
   const [companyFormData, setCompanyFormData] = useState<CompanyType>(company);
   const [companyFormErrors, setCompanyFormErrors] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const validateFields = () => {
     let isValid = true;
@@ -33,17 +37,18 @@ const Authentication: React.FC = () => {
       newErrorList.push('address');
       isValid = false;
     }
-    // if (companyFormData.documents === '') newErrorList.push('documents');
+    if (files.length == 0) {
+      newErrorList.push('documents');
+      isValid = false;
+    }
 
     setCompanyFormErrors(newErrorList);
     return isValid;
   };
 
-  const handleRegister = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (validateFields()) {
-      dispatch(setCompanyData(companyFormData));
-    }
+  const clearErrors = (field: string) => {
+    const newErrorList = companyFormErrors.filter(item => item !== field);
+    setCompanyFormErrors(newErrorList);
   };
 
   const onChangeFormData = (event: ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +56,7 @@ const Authentication: React.FC = () => {
       ...companyFormData,
       [event.target.name]: event.target.value,
     });
+    clearErrors(event.target.name);
   };
 
   const onChangeDate = (date: dayjs.Dayjs | null) => {
@@ -58,6 +64,7 @@ const Authentication: React.FC = () => {
       ...companyFormData,
       corporationDate: dayjs(date).format(),
     });
+    clearErrors('corporationDate');
   };
 
   const handleUploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,19 +80,61 @@ const Authentication: React.FC = () => {
           documents: [...(companyFormData.documents ?? ''), base64String ?? ''],
         });
       };
+      clearErrors('documents');
     }
-    return;
   };
 
   const handleClearFiles = () => {
+    setFiles([]);
     setCompanyFormData({
       ...companyFormData,
       documents: [],
     });
   };
 
+  const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (validateFields()) {
+      setIsLoading(true);
+      dispatch(setCompanyData(companyFormData));
+
+      const encryptedCompanyData = await encryptCompanyData(companyFormData);
+
+      console.log(encryptCompanyData);
+
+      const decryptedCompanyData = await decryptCompanyData(
+        encryptedCompanyData,
+      );
+
+      console.log(decryptedCompanyData);
+
+      await axios
+        .post('https://example.com/api', encryptedCompanyData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => setIsLoading(false));
+    }
+  };
+
   return (
-    <div className="container flex flex-col items-center justify-center gap-10 px-5 py-10">
+    <Stack justifyContent="space-between" alignItems="center" spacing={2}>
+      {isLoading && (
+        <Backdrop
+          sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
+          open={isLoading}
+          onClick={() => setIsLoading(false)}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
       <Typography variant="h6">Enter your company data</Typography>
       <RegisterForm
         handleUploadFile={handleUploadFile}
@@ -96,7 +145,7 @@ const Authentication: React.FC = () => {
         handleRegister={handleRegister}
         handleClearFiles={handleClearFiles}
       />
-    </div>
+    </Stack>
   );
 };
 

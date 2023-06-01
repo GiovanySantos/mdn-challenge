@@ -1,5 +1,13 @@
 import { CompanyType } from '@/types/types';
-import { Button, Input, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  Input,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -34,14 +42,14 @@ const RegisterForm: React.FC<IProps> = props => {
   };
 
   const getIsValid = (fieldName: string) => {
-    return errorsList.some(item => item == fieldName);
+    return !errorsList.some(item => item === fieldName);
   };
 
   return (
-    <form onSubmit={handleRegister} className="flex w-56 flex-col gap-10">
-      <div className="flex flex-col items-center justify-center gap-5">
+    <form onSubmit={handleRegister}>
+      <Stack justifyContent="space-between" alignItems="center" spacing={2}>
         <TextField
-          error={getIsValid('companyName')}
+          error={!getIsValid('companyName')}
           id="companyName"
           name="companyName"
           value={companyFormData.companyName}
@@ -60,7 +68,7 @@ const RegisterForm: React.FC<IProps> = props => {
         </LocalizationProvider>
 
         <TextField
-          error={getIsValid('address')}
+          error={!getIsValid('address')}
           id="address"
           name="address"
           value={companyFormData.address}
@@ -69,22 +77,34 @@ const RegisterForm: React.FC<IProps> = props => {
           variant="outlined"
           fullWidth
         />
-
-        <div className="flex items-center gap-2">
-          <Typography>{companyFormData.documents.length} documents</Typography>
-          <Input
-            type="file"
-            disableUnderline
-            onChange={handleUploadFile}
-            style={{ display: 'none' }}
-            id="file-input"
-          />
-          <label htmlFor="file-input">
-            <Button color="success" variant="contained" component="span">
-              Upload
-            </Button>
-          </label>
-        </div>
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid>
+              <Typography
+                sx={{
+                  color: getIsValid('documents') ? '#000' : '#d32f2f',
+                  paddingRight: '10px',
+                }}
+              >
+                {companyFormData.documents.length} documents
+              </Typography>
+            </Grid>
+            <Grid>
+              <Input
+                type="file"
+                disableUnderline
+                onChange={handleUploadFile}
+                style={{ display: 'none' }}
+                id="file-input"
+              />
+              <label htmlFor="file-input">
+                <Button color="success" variant="contained" component="span">
+                  Upload
+                </Button>
+              </label>
+            </Grid>
+          </Grid>
+        </Box>
         {companyFormData.documents.length > 0 && (
           <Button
             color="error"
@@ -95,18 +115,10 @@ const RegisterForm: React.FC<IProps> = props => {
             Clear files
           </Button>
         )}
-      </div>
-      <div className="flex flex-col items-center justify-center">
-        <Button
-          style={{ backgroundColor: '#15B71A', color: '#fff' }}
-          variant="contained"
-          size="large"
-          type="submit"
-          fullWidth
-        >
+        <Button color="success" variant="outlined" type="submit" fullWidth>
           Submit
         </Button>
-      </div>
+      </Stack>
     </form>
   );
 };

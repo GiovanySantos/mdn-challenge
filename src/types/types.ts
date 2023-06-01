@@ -4,3 +4,8 @@ export type CompanyType = {
   address: string;
   documents: string[];
 };
+
+export type EncryptedFormType = {
+  data: string;
+  salt: string;
+};
