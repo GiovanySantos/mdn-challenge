@@ -29,3 +29,12 @@ The React Form will enable users to register their personal and business details
 - Option to upload documents.
 
 The data must be stored in a redux and once all elements have been captured, encrypt them and sent them via https post to an external web service (there is no need to implement the endpoint).
+
+This project contains examples of:
+
+- NextJS
+- Typescript
+- Material UI
+- Redux
+- Axios
+- ESLint and Prettier

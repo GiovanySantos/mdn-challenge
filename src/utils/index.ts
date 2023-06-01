@@ -1,7 +1,7 @@
 import { CompanyType, EncryptedFormType } from '@/types/types';
 import CryptoJS, { AES } from 'crypto-js';
 
-export const removeDuplicated = (array: string[]) => {
+export const removeDuplicated = (array: string[]): string[] => {
   return array.filter((value, index, self) => {
     return self.indexOf(value) === index;
   });
@@ -22,7 +22,7 @@ export const encryptCompanyData = async (
 
 export const decryptCompanyData = async (
   companyData: EncryptedFormType,
-): Promise<CompanyType | string> => {
+): Promise<CompanyType> => {
   const { data, salt } = companyData;
 
   const decryptedData = AES.decrypt(data, salt).toString(CryptoJS.enc.Utf8);

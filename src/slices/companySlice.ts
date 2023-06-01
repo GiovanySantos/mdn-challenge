@@ -14,12 +14,14 @@ export const companySlice = createSlice({
   initialState,
   reducers: {
     setCompanyData: (state, action: PayloadAction<CompanyType>) => {
+      const { companyName, corporationDate, address, documents } =
+        action.payload;
       return {
         ...state,
-        companyName: action.payload.companyName,
-        corporationDate: action.payload.corporationDate,
-        address: action.payload.address,
-        documents: action.payload.documents,
+        companyName: companyName,
+        corporationDate: corporationDate,
+        address: address,
+        documents: documents,
       };
     },
   },
