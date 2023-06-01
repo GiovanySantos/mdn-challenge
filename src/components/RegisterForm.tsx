@@ -54,6 +54,7 @@ const RegisterForm: React.FC<IProps> = props => {
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
+            sx={{ width: '100%' }}
             format="LL"
             label="Corporation Date"
             value={dayjs(companyFormData.corporationDate)}
