@@ -91,6 +91,7 @@ const Authentication: React.FC = () => {
       ...companyFormData,
       documents: [],
     });
+    dispatch(setCompanyData({ ...company, documents: [] }));
   };
 
   const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
@@ -115,6 +116,7 @@ const Authentication: React.FC = () => {
       } finally {
         setShowToaster(true);
         setIsLoading(false);
+        handleClearFiles();
       }
     }
   };
