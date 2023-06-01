@@ -1,7 +1,7 @@
 'use client';
 import RegisterForm from '@/components/RegisterForm';
 import { useAppDispatch } from '@/hooks/hooks';
-import { setCompanyData } from '@/slices/companySlice';
+import { initialState, setCompanyData } from '@/slices/companySlice';
 import { RootState } from '@/store';
 import { CompanyType } from '@/types/types';
 import { encryptCompanyData } from '@/utils';
@@ -68,6 +68,12 @@ const Authentication: React.FC = () => {
     clearErrors('corporationDate');
   };
 
+  const handleClearForm = () => {
+    handleClearFiles();
+    setCompanyFormErrors([]);
+    setCompanyFormData(initialState);
+  };
+
   const handleUploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
@@ -116,7 +122,7 @@ const Authentication: React.FC = () => {
       } finally {
         setShowToaster(true);
         setIsLoading(false);
-        handleClearFiles();
+        handleClearForm();
       }
     }
   };
