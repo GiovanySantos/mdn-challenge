@@ -17,7 +17,7 @@ const Home: React.FC = () => {
         spacing={2}
       >
         <div className="nav">
-          <Typography variant="h5">MDN Company Registration</Typography>
+          <Typography variant="h5">CRUD Frontend example</Typography>
         </div>
         <main>
           <Authentication />

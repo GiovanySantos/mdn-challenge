@@ -1,8 +1,8 @@
 import '../styles/globals.css';
 
 export const metadata = {
-  title: 'MDN Challenge',
-  description: 'My digital nomads frontend challenge',
+  title: 'CRUD Frontend example',
+  description: 'CRUD for frontend challenge',
 };
 
 export default function RootLayout({
